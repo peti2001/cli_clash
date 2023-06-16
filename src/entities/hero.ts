@@ -82,27 +82,27 @@ export class Hero implements BaseHero {
         combat.attackerWeaponDamage = damage;
         combat.targetArmor = target.armor;
         combat.targetEvasion = target.evasion;
-        const isMissed = Math.random() >= this.weapon.hitChance
-        const isAvaded = Math.random() <= combat.targetEvasion/100;
 
         combatLog.weaponDamage = damage;
         combatLog.attackerStartHp = this.hp;
         combatLog.targetStartHp = target.hp;
         combatLog.attackerName = this.name;
         combatLog.targetName = target.name;
-        combatLog.isAvaded = isAvaded;
-        combatLog.isMissed = isMissed;
 
         // Use abilities, improve damage of the attacker or improve armor of the target or heal
         if (Math.random() <= 0.1) {
             this.attackAbility.activate(combat, this);
-            combatLog.attackAbility
+            combatLog.attackAbility = this.attackAbility;
         }
         if (Math.random() <= 0.1) {
             target.defendAbility.activate(combat, target);
             combatLog.defendAbility = target.defendAbility;
         }
+        const isMissed = Math.random() >= this.weapon.hitChance
+        const isAvaded = Math.random() <= combat.targetEvasion/100;
         combatLog.appliedArmor = combat.targetArmor;
+        combatLog.isAvaded = isAvaded;
+        combatLog.isMissed = isMissed;
 
         damage = combat.attackerWeaponDamage - Math.floor(combat.targetArmor / 3)
         combatLog.finalDamage = damage;
